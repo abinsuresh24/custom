@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--    Form view for the component request model-->
+    <record id="component_request_view_form" model="ir.ui.view">
+        <field name="name">components.request.view.form</field>
+        <field name="model">components.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="button_submit" type="object"
+                            string="SUBMIT" class="oe_highlight"
+                            states="draft"
+                            groups="components_request.components_request_group_user"/>
+                    <button name="first_approval_request" type="object"
+                            string="APPROVE" class="oe_highlight"
+                            states="first_approval"
+                            groups="components_request.components_request_group_manager"/>
+                    <button name="second_approval_request" type="object"
+                            string="APPROVE" class="oe_highlight"
+                            states="second_approval"
+                            groups="components_request.components_request_group_head"/>
+                    <button name="reject_approval_request" string="REJECT"
+                            type="object"
+                            class="oe_highlight" states="second_approval"
+                            groups="components_request.components_request_group_head"/>
+                    <button name="request_reset_to_draft"
+                            string="RESET TO DRAFT"
+                            type="object"
+                            class="oe_highlight" states="rejected"
+                            groups="components_request.components_request_group_head"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,first_approval,
+                           second_approval,confirmed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="job_title"/>
+                        </group>
+                        <group>
+                            <field name="quotation_date"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="components">
+                            <field name="components_ids">
+                                <tree>
+                                    <field name="product_id"/>
+                                    <field name="vendor_ids"/>
+                                    <field name="price"/>
+                                    <field name="quantity"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!--    Tree view for the component request model-->
+    <record id="component_request_view_tree" model="ir.ui.view">
+        <field name="name">components.request.view.tree</field>
+        <field name="model">components.request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="reference"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <!--    Menu action for the component request model-->
+    <record id="components_request_action" model="ir.actions.act_window">
+        <field name="name">Components request</field>
+        <field name="res_model">components.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_root" name="Components Request" sequence="2"/>
+    <menuitem id="components_request_menu" name="Components Request"
+              sequence="3" parent="menu_root"
+              action="components_request_action"/>
+</odoo>

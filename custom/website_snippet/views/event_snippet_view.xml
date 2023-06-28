@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<!--    Template for adding snippet details in the website-->
+    <template id="event_snippet" name="Latest Events">
+        <section class="container event">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center py-5">
+                        <h1 class="h1">Events</h1>
+                        <div class="h3" style="text-align:center">Latest
+                            four events
+                        </div>
+                        <div id="courosel">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+<!--    Template for adding snippet in the website-->
+    <template id="external_snippets" inherit_id="website.snippets" priority="8">
+        <xpath expr="//div[@id='snippet_feature']//t[@t-snippet][last()]"
+               position="after">
+            <t t-snippet="website_snippet.event_snippet"/>
+        </xpath>
+    </template>
+</odoo>

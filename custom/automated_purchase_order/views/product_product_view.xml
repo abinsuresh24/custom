@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    Form view of the product_product model-->
+    <record id="product_product_view_form" model="ir.ui.view">
+        <field name="name">product_product_view_form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_open_label_layout']"
+                   position="before">
+                <button name="purchase_order_confirmed" string="Purchase order"
+                        type="object" class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

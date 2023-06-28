@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<!--    Access level categories for component requests-->
+    <record model="ir.module.category" id="module_category_components_request">
+        <field name="name">Components request</field>
+        <field name="description">Access level for component requests</field>
+        <field name="sequence">20</field>
+    </record>
+<!--    User access level for component requests-->
+    <record id="components_request_group_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id"
+               ref="components_request.module_category_components_request"/>
+    </record>
+<!--    Manager access level for component requests-->
+    <record id="components_request_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id"
+               ref="components_request.module_category_components_request"/>
+    </record>
+<!--    Head access level for component requests-->
+    <record id="components_request_group_head" model="res.groups">
+        <field name="name">Head</field>
+        <field name="category_id"
+               ref="components_request.module_category_components_request"/>
+    </record>
+</odoo>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--    Inherited template for adding Track order in portal-->
+    <template id="portal_my_home_track_order" name="Track order"
+              customize_show="True" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Track Orders</t>
+                <t t-set="url" t-value="'/my/track_order_web'"/>
+                <t t-set="placeholder_count" t-value="'order_count'"/>
+            </t>
+        </xpath>
+    </template>
+    <!--    Template created for showing track orders in the portal as list view-->
+    <template id="track_order_portal_list">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar"/>
+            <t t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th class="text-right">Transfers</th>
+                        <th class="text-right">From location</th>
+                        <th class="text-right">To location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="order" t-as="rec">
+                        <t t-foreach="rec.track_order_ids" t-as="line">
+                            <tr>
+                                <td class="text-right">
+                                    <span t-field="rec.name"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.from_location_id.complete_name"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.to_loc_id.complete_name"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+<!--    Template use for adding search button in the portal menu-->
+    <template id="portal_searchbar" name="Portal Search Bar">
+        <form t-if="searchbar_inputs"
+              class="o_portal_search_panel ms-lg-4 col-xl-4 col-md-5">
+            <div class="input-group input-group-sm w-100">
+                <button type="button" class="btn btn-secondary dropdown-toggle"
+                        data-bs-toggle="dropdown"/>
+                <div class="dropdown-menu" role="menu">
+                    <t t-foreach='searchbar_inputs' t-as='input'>
+                        <a t-att-href="'#' + input_value['input']"
+                           t-attf-class="dropdown-item#{search_in == input_value['input'] and ' active' or ''}">
+                            <span t-out="input_value['label']"/>
+                        </a>
+                    </t>
+                </div>
+                <input type="text" class="form-control form-control-sm"
+                       placeholder="Search" t-att-value='search' name="search"/>
+                <button class="btn btn-secondary o_wait_lazy_js" type="submit">
+                    <span class="fa fa-search"/>
+                </button>
+            </div>
+        </form>
+    </template>
+</odoo>

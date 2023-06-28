@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--    From view for the component model-->
+    <record id="components_view_form" model="ir.ui.view">
+        <field name="name">components.view.form</field>
+        <field name="model">components.product</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                            <field name="request_option"/>
+                            <field name="vendor_ids" widget="many2many_tags"
+                                   attrs="{'invisible':[('request_option', '!=', 'purchase_order')]}"/>
+                        </group>
+                        <group>
+                            <field name="price"/>
+                            <field name="quantity"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!--    Menu action for the component model-->
+    <record id="components_action" model="ir.actions.act_window">
+        <field name="name">components.action</field>
+        <field name="res_model">components.product</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

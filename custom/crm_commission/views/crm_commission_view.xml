@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--    Form view for the crm commission model-->
+    <record id="crm_commission_view_form" model="ir.ui.view">
+        <field name="name">crm.commission.view.form</field>
+        <field name="model">crm.commission</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="plan_name"/>
+                            <field name="plan_active"/>
+                            <field name="plan_type"/>
+                        </group>
+                        <group>
+                            <field name="to_date"/>
+                            <field name="from_date"/>
+                            <field name="revenue_type"
+                                   attrs="{'invisible':[('plan_type', '!=', 'revenue_wise')]}"/>
+                            <field name="straight_rate"
+                                   attrs="{'invisible':[('revenue_type', '!=', 'straight')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Product wise"
+                              attrs="{'invisible':[('plan_type', '!=', 'product_wise')]}">
+                            <field name="commission_product_ids">
+                                <tree editable="bottom">
+                                    <field name="product_category_id"/>
+                                    <field name="product_id"/>
+                                    <field name="rate" widget="percent"/>
+                                    <field name="max_commission"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Revenue wise"
+                              attrs="{'invisible':[('revenue_type', '!=', 'graduated')]}">
+                            <field name="commission_revenue_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence"/>
+                                    <field name="from_amount"/>
+                                    <field name="to_amount"/>
+                                    <field name="rate" widget="percent"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!--    Tree view for the crm commission model-->
+    <record id="crm_commission_view_tree" model="ir.ui.view">
+        <field name="name">crm.commission.view.tree</field>
+        <field name="model">crm.commission</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="plan_name"/>
+                <field name="plan_active"/>
+                <field name="to_date"/>
+                <field name="from_date"/>
+            </tree>
+        </field>
+    </record>
+    <!--   View action for the crm commission model-->
+    <record id="crm_commission_action" model="ir.actions.act_window">
+        <field name="name">crm commission</field>
+        <field name="res_model">crm.commission</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_root" name="Commission" sequence="2"/>
+    <menuitem id="commission_menu" name="Commission"
+              sequence="3" parent="menu_root"
+              action="crm_commission_action"/>
+</odoo>

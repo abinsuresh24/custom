@@ -1,0 +1,5 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_components_request,access_components_request,model_components_request,components_request.components_request_group_user,1,1,1,1
+access_components_request_manager,access_components_request,model_components_request,components_request.components_request_group_manager,1,1,0,1
+access_components_request_head,access_components_request,model_components_request,components_request.components_request_group_head,1,1,0,1
+access_components_product,access_components_product,model_components_product,base.group_user,1,1,1,1
