@@ -8,6 +8,7 @@ class PosSessions(models.Model):
 
     def _loader_params_product_product(self):
         """Function defined for appending product owner """
-        result = super()._loader_params_product_product()
-        result['search_params']['fields'].append('owner_id')
+        result = super()._loader_params_res_partner()
+        result['search_params']['fields'].append('purchase_limit')
+        result['search_params']['fields'].append('purchase_amount')
         return result
