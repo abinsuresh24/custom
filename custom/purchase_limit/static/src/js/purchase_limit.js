@@ -1,76 +1,37 @@
 odoo.define('purchase_limit.PaymentScreen', function(require) {
     'use strict';
 
+    const useState = owl.hooks;
+    const AbstractAwaitablePopup = require('point_of_sale.AbstractAwaitablePopup');
+    const useAutoFocusToLast = require('point_of_sale.custom_hooks');
     const PaymentScreen = require('point_of_sale.PaymentScreen');
     const Registries = require('point_of_sale.Registries');
-     var core = require('web.core');
-     var _t= core._t;
+    var core = require('web.core');
+    var _t= core._t;
 
     const PurchaseLimit = (PaymentScreen) => class PurchaseLimit extends PaymentScreen{
-    setup(){
-    super.setup()
-    console.log("111")}
-//    super._onClickPay()
-    _onClickPay(){
+    validateOrder(){
+    super.validateOrder()
     var self =this;
-    var order= self.pos.get_order();
+    var order= self.env.pos.get_order();
     var sub_total=order.get_subtotal();
-    purchase_amount = this.get_partner().purchase_amount;
-    if(sub_total > purchase_amount){
-    const { confirmed, payload } = this.showPopup('ErrorTracebackPopup', {
+    var partner = this.env.pos.get_order().get_partner();
+    var amount= partner.purchase_amount;
+    var p_limit=partner.purchase_limit;
+    console.log(p_limit);
+    if (p_limit){
+    if(sub_total>amount){
+    const { confirmed, payload } = this.showPopup('ConfirmPopup', {
        title: this.env._t('Purchase Limit'),
-       body: this.env._t('Purchase limit exceeded'),
+       body: _.str.sprintf(this.env._t('Purchase limit %s exceeded'), partner.purchase_amount),
    });
    if (confirmed) {
        console.log(payload, 'payload')
    }
     }
-    console.warn(sub_total);
-    console.warn('111111111111111111111111111');
+    }
     }
     }
     Registries.Component.extend(PaymentScreen, PurchaseLimit);
     return PaymentScreen;
 });
-
-
-
-
-
-
-
-//-------------------------------------------------------------------------
-//    purchase_amount = this.get_partner().purchase_amount;
-//    if(sub_total > purchase_amount){
-//    const { confirmed, payload } = await this.showPopup('ErrorTracebackPopup', {
-//       title: this.env._t('Purchase Limit'),
-//       body: this.env._t('Purchase limit exceeded'),
-//   });
-//   if (confirmed) {
-//       console.log(payload, 'payload')
-//   }
-//    }
-//-------------------------------------
-//odoo.define('purchase_limit.PaymentScreen', function (require) {
-//    'use strict';
-//
-//    var Screens= require('point_of_sale.screens');
-//    var core = require.('web.core');
-//     var _t= core._t;
-//
-//     Screens.ActionpadWidget.include({
-//
-//        const PosComponent = require('point_of_sale.PosComponent');
-//        const Registries = require('point_of_sale.Registries');
-//
-//        const PurchaseLimit = (PaymentScreen) => class PurchaseLimit extends PaymentScreen{
-//        _onClickPay(){
-//        var self =this;
-//        this._super();
-//        var order= self.pos.get_order();
-//        var sub_total=order.get_subtotal();
-//        console.warn(sub_total);
-//        }var _t= core._t;
-//    }
-//    Registries.Component.extend(PaymentScreen, PurchaseLimit);
-//});
