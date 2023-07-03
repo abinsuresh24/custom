@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!--    Adding new  field in res users-->
+    <!--    Adding new field in res partners form view-->
     <record id="res_partner_view_form" model="ir.ui.view">
         <field name="name">res.partner.view.form</field>
         <field name="model">res.partner</field>
@@ -9,7 +9,8 @@
             <xpath expr="//field[@name='property_supplier_payment_term_id']"
                    position="after">
                 <field name="purchase_limit"/>
-                <field name="purchase_amount" attrs="{'invisible':[('purchase_limit','=', False)]}"/>
+                <field name="purchase_amount"
+                       attrs="{'invisible':[('purchase_limit','=', False)]}"/>
             </xpath>
         </field>
     </record>

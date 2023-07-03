@@ -7,7 +7,8 @@ class PosSessions(models.Model):
     _inherit = 'pos.session'
 
     def _loader_params_res_partner(self):
-        """Function defined for appending product owner """
+        """Function defined for appending product purchase_limit
+         and purchase_amount """
         result = super()._loader_params_res_partner()
         result['search_params']['fields'].append('purchase_amount')
         result['search_params']['fields'].append('purchase_limit')

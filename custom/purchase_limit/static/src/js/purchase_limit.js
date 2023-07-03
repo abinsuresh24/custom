@@ -1,37 +1,45 @@
-odoo.define('purchase_limit.PaymentScreen', function(require) {
-    'use strict';
+/** @odoo-module **/
 
-    const useState = owl.hooks;
-    const AbstractAwaitablePopup = require('point_of_sale.AbstractAwaitablePopup');
-    const useAutoFocusToLast = require('point_of_sale.custom_hooks');
-    const PaymentScreen = require('point_of_sale.PaymentScreen');
-    const Registries = require('point_of_sale.Registries');
-    var core = require('web.core');
-    var _t= core._t;
+import PaymentScreen from 'point_of_sale.PaymentScreen';
+import Registries from 'point_of_sale.Registries';
+var core = require('web.core');
+var _t = core._t;
 
-    const PurchaseLimit = (PaymentScreen) => class PurchaseLimit extends PaymentScreen{
-    validateOrder(){
-    super.validateOrder()
-    var self =this;
-    var order= self.env.pos.get_order();
-    var sub_total=order.get_subtotal();
-    var partner = this.env.pos.get_order().get_partner();
-    var amount= partner.purchase_amount;
-    var p_limit=partner.purchase_limit;
-    console.log(p_limit);
-    if (p_limit){
-    if(sub_total>amount){
-    const { confirmed, payload } = this.showPopup('ConfirmPopup', {
-       title: this.env._t('Purchase Limit'),
-       body: _.str.sprintf(this.env._t('Purchase limit %s exceeded'), partner.purchase_amount),
-   });
-   if (confirmed) {
-       console.log(payload, 'payload')
-   }
+const PurchaseLimit = (PaymentScreen) => class PurchaseLimit extends
+PaymentScreen {
+    //Inhering the PaymentScreen for adding new functions
+    async validateOrder() {
+        //Function defined for checking customer and purchase limit
+        //for the customer when validating the order
+        var order = this.env.pos.get_order();
+        var sub_total = order.get_subtotal();
+        var partner = this.env.pos.get_order().get_partner();
+        if (!partner) {
+            const { confirmed } = this.showPopup('ConfirmPopup', {
+                title: this.env._t('Customer Needed'),
+                body: this.env._t('Please select a customer'),
+            });
+        }
+        else {
+            var purchase_amount = partner.purchase_amount;
+            var purchase_limit = partner.purchase_limit;
+            if (purchase_limit) {
+                if (sub_total > purchase_amount) {
+                    const { confirmed, payload } = this.showPopup
+                    ('ConfirmPopup', {
+                        title: this.env._t('Purchase Limit'),
+                        body: _.str.sprintf(this.env._t
+                        ('Purchase limit %s exceeded'), partner.purchase_amount)
+                    });
+                }
+                else{
+                await super.validateOrder();
+                }
+            }
+            else {
+                await super.validateOrder();
+            }
+        }
     }
-    }
-    }
-    }
-    Registries.Component.extend(PaymentScreen, PurchaseLimit);
-    return PaymentScreen;
-});
+}
+Registries.Component.extend(PaymentScreen, PurchaseLimit);

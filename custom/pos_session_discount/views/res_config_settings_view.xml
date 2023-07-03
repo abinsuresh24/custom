@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_forms" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.point_of_sale
+        </field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="95"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='product_prices']"
+                   position="after">
+                <div class="col-12 col-lg-6 o_setting_box"
+                     id="pos_categ_discount ">
+                    <div class="o_setting_left_pane">
+                        <field name="pos_categ_discount"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="pos_categ_discount"
+                               string="Discount for Categories"/>
+                        <div class="text-muted mb16">
+                            Set Discount Limit For Category
+                        </div>
+                    </div>
+                    <div class="content-group mt16"
+                         attrs="{'invisible' : [('pos_categ_discount', '=', False)]}">
+                        <div class="row">
+                            <label for="pos_max_discount"
+                                   string="Maximum discount"
+                                   class="col-lg-3 o_light_label"/>
+                            <field name="pos_max_discount" class="oe_inline"/>
+                        </div>
+                    </div>
+                    <div class="content-group mt16"
+                         attrs="{'invisible' : [('pos_categ_discount', '=', False)]}">
+                        <div class="row">
+                            <label for="pos_categ_ids"
+                                   string="Discount for categories"
+                                   class="col-lg-3 o_light_label"/>
+                            <field name="pos_categ_ids" class="oe_inline" widget="many2many_tags"/>
+                        </div>
+                    </div>
+                </div>
+                <!--                <div class="o_setting_left_pane">-->
+                <!--                    <field name="pos_max_discount"/>-->
+                <!--                </div>-->
+            </xpath>
+        </field>
+    </record>
+</odoo>
