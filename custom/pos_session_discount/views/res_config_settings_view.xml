@@ -34,15 +34,13 @@
                          attrs="{'invisible' : [('pos_categ_discount', '=', False)]}">
                         <div class="row">
                             <label for="pos_categ_ids"
-                                   string="Discount for categories"
+                                   string="Categories"
                                    class="col-lg-3 o_light_label"/>
-                            <field name="pos_categ_ids" class="oe_inline" widget="many2many_tags"/>
+                            <field name="pos_categ_ids" class="oe_inline"
+                                   widget="many2many_tags"/>
                         </div>
                     </div>
                 </div>
-                <!--                <div class="o_setting_left_pane">-->
-                <!--                    <field name="pos_max_discount"/>-->
-                <!--                </div>-->
             </xpath>
         </field>
     </record>

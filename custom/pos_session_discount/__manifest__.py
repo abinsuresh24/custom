@@ -14,7 +14,7 @@
     ],
     'assets': {
         'point_of_sale.assets': [
-            'purchase_limit/static/src/js/**/*',
+            'pos_session_discount/static/src/js/**/*',
            ],
      },
     'installable': True,
