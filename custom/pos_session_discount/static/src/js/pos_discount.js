@@ -15,8 +15,6 @@ const Discount = (Orderline) => class Discount extends Orderline {
     var categ = this.product.pos_categ_id[0];
     var order = this.order.orderlines;
     var total_disc = {};
-    var config_category = this.pos.config;
-    console.warn(config_category)
     for (var rec of order) {
       var line_categ = rec.product.pos_categ_id[0];
       if (pos_categ.includes(line_categ)) {
@@ -26,7 +24,6 @@ const Discount = (Orderline) => class Discount extends Orderline {
         total_disc[line_categ] += rec.discount;
       }
     }
-
     for (var category in total_disc) {
       if (total_disc[category] > pos_disc) {
         const { confirmed } = await Gui.showPopup("ConfirmPopup", {

@@ -7,11 +7,11 @@
         <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@id='other_devices']//div[hasclass('o_setting_right_pane')]"
-                   position="inside">
+                   position="after">
                 <field name="disc_category_ids">
                     <tree>
                         <field name="category_id"/>
-                        <field name="discount"/>
+                        <field name="pos_discount"/>
                     </tree>
                 </field>
             </xpath>

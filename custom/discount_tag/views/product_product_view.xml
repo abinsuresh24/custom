@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!--    Adding new  field in product variants-->
+    <!--    Adding new  field in product model-->
     <record id="product_product_view_form" model="ir.ui.view">
         <field name="name">product.product.view.form</field>
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='lst_price']" position="after">
-                <field name="owner_id"/>
+            <xpath expr="//field[@name='pos_categ_id']" position="after">
+                <field name="discount_tag"/>
             </xpath>
         </field>
     </record>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Template inherited for adding product discount tag-->
+<templates id="template" xml:space="preserve">
+<!--    Adding discount tag in the pos receipt-->
+    <t t-name="OrderLinesReceipt" t-inherit="point_of_sale.OrderLinesReceipt" t-inherit-mode="extension" owl="1">
+       <xpath expr="//t[@t-foreach='receipt.orderlines']" position="inside">
+       <t t-if="line.discount_tag">
+           <div class="fa fa-fw fa-star">
+               <t t-esc="line.discount_tag"/></div>
+        </t>
+</xpath>
+    </t>
+<!--    Adding discount tag the pos order line-->
+    <t t-name="Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension" owl="1">
+        <xpath expr="//ul[hasclass('info-list')]" position="inside">
+            <t t-if="props.line.get_product().discount_tag">
+                <div class="fa fa-fw fa-star">
+                    <t t-esc='props.line.get_product().discount_tag'/></div>
+            </t>
+        </xpath>
+    </t>
+    <!--    Adding discount tag the product item-->
+    <t t-name="ProductItem" t-inherit="point_of_sale.ProductItem" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('product-img')]" position="before">
+            <t t-if="props.product.discount_tag">
+                <div class="myclass" align="right">
+                    <t t-esc="props.product.discount_tag"/></div>
+            </t>
+        </xpath>
+    </t>
+</templates>

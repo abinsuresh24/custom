@@ -8,5 +8,5 @@ class DiscountCategory(models.Model):
     _description = "Discount limit for category"
 
     category_id = fields.Many2one('pos.category', string="Category")
-    discount = fields.Float(string="Discount")
-    discount_categ_id = fields.Many2one('pos.config', string="Pos config")
+    pos_discount = fields.Float(string="Discount")
+    pos_config_id = fields.Many2one('pos.config', string="Pos config")

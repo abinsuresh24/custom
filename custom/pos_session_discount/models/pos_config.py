@@ -14,5 +14,5 @@ class PosConfig(models.Model):
                                  string="Categories",
                                  help="Categories for appling discount limit")
     disc_category_ids = fields.One2many('discount.category',
-                                        'discount_categ_id',
+                                        'pos_config_id',
                                         string="Discount Category")
