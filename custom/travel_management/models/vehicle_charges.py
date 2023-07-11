@@ -23,7 +23,7 @@ class TravelCharges(models.Model):
                                      currency_field="company_currency_id")
     service_charges_id = fields.Many2one('travel.vehicle',
                                          string="Service charges")
-    service_charges1_id = fields.Many2one('tour.package',
+    tour_service_charges_id = fields.Many2one('tour.package',
                                           string='service charges1')
     service_subtotal = fields.Float(string="Subtotal",
                                     help="Calculated as Quantity * Amount")

@@ -46,7 +46,7 @@ class TourPackage(models.Model):
     estimation_km = fields.Float(string="Estimated KM",
                                  help="Estimated kilometer of the package")
     vehicle_charges_ids = fields.One2many('travel.charges',
-                                          'service_charges1_id',
+                                          'tour_service_charges_id',
                                           string="Service charges")
     package_estimation_amount = fields.Float(string="Estimation amount",
                                              help="Estimated amount of the "
