@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_workshop_appointment,access_workshop_appointment,model_workshop_appointment,base.group_user,1,1,1,1
+access_workshop_complaints,access_workshop_complaints,model_workshop_complaints,base.group_user,1,1,1,1
