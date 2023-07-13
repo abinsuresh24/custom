@@ -8,4 +8,4 @@ class WorshopAppointment(models.Model):
 
     complaints = fields.Char(string="Complaints",
                              help="Specify your vehicle complaints")
-    workshop_id = fields.Many2one('workshop.appointment',invisible=1)
+    workshop_id = fields.Many2one('workshop.appointment', invisible=1)

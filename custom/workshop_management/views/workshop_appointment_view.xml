@@ -11,6 +11,8 @@
                            statusbar_visible="draft,confirmed"/>
                     <button name="appointment_confirm" string="Confirm"
                             type="object" class="oe_highlight" states="draft"/>
+                    <button name="vehicle_pickup" string="Pick-up"
+                            type="object" class="oe_highlight" states="confirmed"/>
                     <button name="appointment_cancel" string="Cancel"
                             type="object" class="oe_highlight"
                             states="confirmed"/>

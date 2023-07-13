@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
+from datetime import timedelta
 from odoo import api, fields, models, _
 
 
@@ -18,9 +18,11 @@ class WorkshopAppointment(models.Model):
     phone = fields.Char(related='customer_id.phone', string="Phone")
     email = fields.Char(related='customer_id.email', string="Email")
     state = fields.Selection([('draft', 'Draft'), ('confirmed', 'Confirmed'),
+                              ('to_work', 'To Work'),
                               ('cancelled', 'Cancelled')],
                              string='State', default='draft')
     vehicle_id = fields.Many2one('fleet.vehicle', string="Vehicle",
+                                 domain="[('driver_id', '=', customer_id)]",
                                  help="Vehicle to repair")
     total_km = fields.Float(string="Total Kilometer",
                             help="Total odo-meter reading")
@@ -34,17 +36,35 @@ class WorkshopAppointment(models.Model):
     company_id = fields.Many2one('res.company', string="Company name",
                                  help="Company name",
                                  default=lambda self: self.env.company)
-    description = fields.Char(string="Description", default=lambda self: _(
-        'APPOINTMENT CONFIRMATION MAIL'))
 
     def appointment_confirm(self):
-        # mail_template = self.env.ref(
-        #     'workshop_management.confirmation_email_template')
-        # mail_template.send_mail(self.id, force_send=True)
+        mail_template = self.env.ref(
+            'workshop_management.confirmation_email_template')
+        mail_template.send_mail(self.id, force_send=True)
+        self.env['work.order'].create({
+            'customer_id': self.customer_id.id,
+            'appointment_no': self.appointment_no,
+            'vehicle_id': self.vehicle_id.id,
+            'appointment_date': self.appointment_date,
+            'odo_meter': self.total_km,
+        })
         self.write({'state': 'confirmed'})
 
     def appointment_cancel(self):
         self.write({'state': 'cancelled'})
+
+    def vehicle_pickup(self):
+        return {
+            'name': 'Other complaints',
+            'type': 'ir.actions.act_window',
+            'res_model': 'other.complaints',
+            'view_mode': 'form',
+            "target": 'new',
+            "context": {
+                'active_id': self.id,
+                'default_appointment': self.appointment_no,
+            },
+        }
 
     @api.model
     def create(self, vals_list):
@@ -58,6 +78,13 @@ class WorkshopAppointment(models.Model):
 
     def reminder_mail(self):
         print("haii")
-        #     mail_template = self.env.ref(
-        #         'workshop_management.reminder_email_template')
-        #     mail_template.send_mail(self.id, force_send=True)
+        today = fields.Date.today()
+        tomorrow = today + timedelta(days=1)
+        print(today)
+        print(tomorrow)
+        for rec in self.search([]):
+            if rec.appointment_date == tomorrow:
+                print("yes")
+                mail_template = self.env.ref(
+                    'workshop_management.reminder_email_template')
+                mail_template.send_mail(rec.id, force_send=True)
