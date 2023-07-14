@@ -7,15 +7,27 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar"
-                           statusbar_visible="draft,repaired"/>
+                    <field name="state" widget="statusbar"/>
                     <button name="work_confirm" string="Confirm"
+                            type="object" class="oe_highlight" states="running"/>
+                    <button name="request_approval" string="Request approval"
                             type="object" class="oe_highlight" states="draft"/>
+                    <button name="create_invoice" string="Create invoice"
+                            type="object" class="oe_highlight"
+                            states="repaired"/>
                     <button name="work_cancel" string="Cancel"
                             type="object" class="oe_highlight"
                             states="draft"/>
                 </header>
                 <sheet>
+                    <div class="btn">
+                        <button name="start_work" string="Start"
+                                type="object" class="btn-success"
+                                states="draft"/>
+                        <button name="stop_work" string="Stop"
+                                type="object" class="btn-danger"
+                                states="running"/>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="order_no"/>
@@ -24,19 +36,30 @@
                     <group>
                         <group>
                             <field name="appointment_no"/>
+                            <field name="mechanic_id"/>
                             <field name="customer_id"/>
                             <field name="vehicle_id"/>
-                            <field name="start_date"/>
-                            <field name="end_date"/>
+                            <field name="odo_meter"/>
                         </group>
                         <group>
                             <field name="booking_date"/>
                             <field name="appointment_date"/>
                             <field name="phone"/>
-                            <field name="odo_meter"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
                         </group>
                     </group>
                     <notebook>
+                        <page string="materials">
+                            <field name="material_order_ids">
+                                <tree editable="bottom">
+                                    <field name="materials"/>
+                                    <field name="quantity"/>
+                                    <field name="price"/>
+                                    <field name="total_price"/>
+                                </tree>
+                            </field>
+                        </page>
                         <page string="Materials">
                             <field name="orderline_ids">
                                 <tree editable="bottom">
@@ -45,6 +68,16 @@
                                     <field name="price_unit"/>
                                 </tree>
                             </field>
+                        </page>
+                        <page string="Extra components">
+                            <field name="extra_components_ids">
+                                <tree editable="bottom">
+                                    <field name="extra_components"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -74,9 +107,6 @@
         <field name="res_model">work.order</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <menuitem id="menu_work_order"
-              name="Work Order"
-              parent="menu_root"
-              action="workshop_order_action"
-              sequence="0"/>
+    <menuitem id="menu_work_order" name="Work Order" parent="menu_root"
+              action="workshop_order_action" sequence="0"/>
 </odoo>

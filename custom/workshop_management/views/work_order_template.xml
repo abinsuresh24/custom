@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--    Inherited template for adding Track order in portal-->
+    <template id="portal_my_home_work_order" name="Workorder"
+              customize_show="True" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Work Orders</t>
+                <t t-set="url" t-value="'/my/work_order_web'"/>
+                <t t-set="placeholder_count" t-value="'order_count'"/>
+            </t>
+        </xpath>
+    </template>
+    <!--    Template created for showing track orders in the portal as list view-->
+    <template id="work_order_portal_list">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th class="text-right">Work orders</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="order" t-as="rec">
+                        <tr>
+                            <td class="text-right">
+                                <span t-field="rec.order_no"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+</odoo>

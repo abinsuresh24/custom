@@ -18,13 +18,14 @@ class WorkshopAppointment(models.Model):
     phone = fields.Char(related='customer_id.phone', string="Phone")
     email = fields.Char(related='customer_id.email', string="Email")
     state = fields.Selection([('draft', 'Draft'), ('confirmed', 'Confirmed'),
+                              ('received', 'Vehicle Received'),
                               ('to_work', 'To Work'),
                               ('cancelled', 'Cancelled')],
                              string='State', default='draft')
     vehicle_id = fields.Many2one('fleet.vehicle', string="Vehicle",
                                  domain="[('driver_id', '=', customer_id)]",
                                  help="Vehicle to repair")
-    total_km = fields.Float(string="Total Kilometer",
+    total_km = fields.Float(string="Total odo-meter",
                             help="Total odo-meter reading")
     booking_date = fields.Date(string="Booking date",
                                default=fields.Date.today())
@@ -36,24 +37,20 @@ class WorkshopAppointment(models.Model):
     company_id = fields.Many2one('res.company', string="Company name",
                                  help="Company name",
                                  default=lambda self: self.env.company)
+    notes = fields.Html(string="Notes")
+    work_order_id = fields.Many2one('work.order')
 
     def appointment_confirm(self):
         mail_template = self.env.ref(
             'workshop_management.confirmation_email_template')
         mail_template.send_mail(self.id, force_send=True)
-        self.env['work.order'].create({
-            'customer_id': self.customer_id.id,
-            'appointment_no': self.appointment_no,
-            'vehicle_id': self.vehicle_id.id,
-            'appointment_date': self.appointment_date,
-            'odo_meter': self.total_km,
-        })
         self.write({'state': 'confirmed'})
 
     def appointment_cancel(self):
         self.write({'state': 'cancelled'})
 
-    def vehicle_pickup(self):
+    def receive_vehicle(self):
+        self.write({'state': 'received'})
         return {
             'name': 'Other complaints',
             'type': 'ir.actions.act_window',
@@ -65,6 +62,16 @@ class WorkshopAppointment(models.Model):
                 'default_appointment': self.appointment_no,
             },
         }
+
+    def vehicle_pickup(self):
+        self.work_order_id = self.env['work.order'].create({
+            'customer_id': self.customer_id.id,
+            'appointment_no': self.appointment_no,
+            'vehicle_id': self.vehicle_id.id,
+            'appointment_date': self.appointment_date,
+            'odo_meter': self.total_km,
+        })
+        self.write({'state': 'to_work'})
 
     @api.model
     def create(self, vals_list):
@@ -88,3 +95,13 @@ class WorkshopAppointment(models.Model):
                 mail_template = self.env.ref(
                     'workshop_management.reminder_email_template')
                 mail_template.send_mail(rec.id, force_send=True)
+
+    def smart_button_work_order(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'work_order',
+            'view_mode': 'form',
+            'res_model': 'work.order',
+            'res_id': self.work_order_id.id,
+            'context': {'create': False}
+        }

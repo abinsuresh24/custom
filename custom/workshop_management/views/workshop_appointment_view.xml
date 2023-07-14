@@ -7,17 +7,25 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar"
-                           statusbar_visible="draft,confirmed"/>
+                    <field name="state" widget="statusbar"/>
                     <button name="appointment_confirm" string="Confirm"
                             type="object" class="oe_highlight" states="draft"/>
+                    <button name="receive_vehicle" string="Receive"
+                            type="object" class="oe_highlight"
+                            states="confirmed"/>
                     <button name="vehicle_pickup" string="Pick-up"
-                            type="object" class="oe_highlight" states="confirmed"/>
+                            type="object" class="oe_highlight"
+                            states="received"/>
                     <button name="appointment_cancel" string="Cancel"
                             type="object" class="oe_highlight"
                             states="confirmed"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="smart_button_work_order" string="Service"
+                            type="object" class="oe_stat_button" icon="fa-car"
+                            states="to_work"/>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="appointment_no"/>
@@ -44,6 +52,9 @@
                                     <field name="complaints"/>
                                 </tree>
                             </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
                         </page>
                         <page string="Other info">
                             <group>

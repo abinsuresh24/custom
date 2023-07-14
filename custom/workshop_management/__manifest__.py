@@ -8,7 +8,8 @@
     'description': """
      Details about workshop management and service details
     """,
-    'depends': ['base', 'mail', 'account', 'contacts', 'fleet', 'sale_management'],
+    'depends': ['base', 'mail', 'account', 'contacts', 'fleet',
+                'sale_management', 'hr', 'hr_timesheet'],
     'data': [
         'security/ir.model.access.csv',
         'data/sequence.xml',
@@ -17,6 +18,7 @@
         'data/reminder_scheduler.xml',
         'views/workshop_appointment_view.xml',
         'views/work_order_view.xml',
+        'views/work_order_template.xml',
         'wizards/other_complaints_view.xml',
     ],
     'installable': True,
