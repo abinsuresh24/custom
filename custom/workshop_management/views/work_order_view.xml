@@ -8,11 +8,22 @@
             <form>
                 <header>
                     <field name="state" widget="statusbar"/>
-                    <button name="work_confirm" string="Confirm"
-                            type="object" class="oe_highlight" states="running"/>
+                    <button name="start_work" string="Start"
+                            type="object" class="btn-success"
+                            states="draft"/>
+                    <button name="stop_work" string="Stop"
+                            type="object" class="btn-danger"
+                            states="running,hold"/>
                     <button name="request_approval" string="Request approval"
-                            type="object" class="oe_highlight" states="draft"/>
+                            type="object" class="oe_highlight"
+                            states="draft,running"/>
+                    <button name="work_confirm" string="Confirm"
+                            type="object" class="oe_highlight"
+                            states="running,hold"/>
                     <button name="create_invoice" string="Create invoice"
+                            type="object" class="oe_highlight"
+                            states="repaired"/>
+                    <button name="create_report" string="PDF Report"
                             type="object" class="oe_highlight"
                             states="repaired"/>
                     <button name="work_cancel" string="Cancel"
@@ -20,13 +31,11 @@
                             states="draft"/>
                 </header>
                 <sheet>
-                    <div class="btn">
-                        <button name="start_work" string="Start"
-                                type="object" class="btn-success"
-                                states="draft"/>
-                        <button name="stop_work" string="Stop"
-                                type="object" class="btn-danger"
-                                states="running"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="smart_button_appointment"
+                                string="Appointment"
+                                type="object" class="oe_stat_button"
+                                icon="fa-car" states="draft"/>
                     </div>
                     <div class="oe_title">
                         <h1>
@@ -50,22 +59,13 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="materials">
+                        <page string="Materials">
                             <field name="material_order_ids">
                                 <tree editable="bottom">
-                                    <field name="materials"/>
+                                    <field name="materials_id"/>
                                     <field name="quantity"/>
                                     <field name="price"/>
                                     <field name="total_price"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Materials">
-                            <field name="orderline_ids">
-                                <tree editable="bottom">
-                                    <field name="product_template_id"/>
-                                    <field name="product_uom_qty"/>
-                                    <field name="price_unit"/>
                                 </tree>
                             </field>
                         </page>

@@ -2,7 +2,8 @@
 from odoo import fields, models
 
 
-class WorshopAppointment(models.Model):
+class WorkshopCompliant(models.Model):
+    """Class defined for adding complaints in the appointment"""
     _name = 'workshop.complaints'
     _description = "Workshop complaints details"
 

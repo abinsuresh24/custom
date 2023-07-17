@@ -8,9 +8,8 @@
     'description': """
      coc
     """,
-    'depends': ['base', 'sale_management', 'product',],
+    'depends': ['base', 'sale_management'],
     'data': [
-             'views/product_product_view.xml',
              'views/sale_order_view.xml',
              ],
     'installable': True,

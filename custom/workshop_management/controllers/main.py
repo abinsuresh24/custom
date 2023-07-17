@@ -13,7 +13,8 @@ class WorkOrders(CustomerPortal):
         user = request.env.user
         partner = user.partner_id.id
         val = super(WorkOrders, self)._prepare_home_portal_values(counters)
-        val['order_count'] = request.env['work.order'].sudo().search_count([('customer_id', '=', partner)])
+        val['order_count'] = request.env['work.order'].sudo().search_count(
+            [('customer_id', '=', partner)])
         return val
 
     @http.route('/my/work_order_web', type='http', auth='public', website=True)
@@ -27,3 +28,11 @@ class WorkOrders(CustomerPortal):
             [('customer_id', '=', partner)])
         return request.render("workshop_management.work_order_portal_list",
                               {'order': order})
+
+    @http.route('/my/work_order_web/<model("work.order"):order_id>',
+                type='http', auth='public',website=True)
+    def orders(self, order_id):
+        """Function defined for setting approve button in the customer portal"""
+        vals = {'order': order_id}
+        return request.render("workshop_management.work_order_portal_form",
+                              vals)

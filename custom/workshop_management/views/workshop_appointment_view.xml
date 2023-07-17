@@ -61,6 +61,7 @@
                                 <group>
                                     <field name="responsible_id"/>
                                     <field name="company_id"/>
+                                    <field name="maintenance_reminder"/>
                                 </group>
                             </group>
                         </page>

@@ -12,6 +12,7 @@
     'data': [
         'views/event_snippet_view.xml',
         'views/event_view.xml',
+        'views/sale_order_view.xml',
     ],
     'assets': {
         'web.assets_frontend': [

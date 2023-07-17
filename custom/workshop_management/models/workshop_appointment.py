@@ -4,6 +4,7 @@ from odoo import api, fields, models, _
 
 
 class WorkshopAppointment(models.Model):
+    """Class defined for adding appoint details of the customers"""
     _name = 'workshop.appointment'
     _description = "Workshop appointment details"
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -25,11 +26,12 @@ class WorkshopAppointment(models.Model):
     vehicle_id = fields.Many2one('fleet.vehicle', string="Vehicle",
                                  domain="[('driver_id', '=', customer_id)]",
                                  help="Vehicle to repair")
-    total_km = fields.Float(string="Total odo-meter",
+    total_km = fields.Float(string="Last odo-meter",
+                            related="vehicle_id.odometer",
                             help="Total odo-meter reading")
     booking_date = fields.Date(string="Booking date",
                                default=fields.Date.today())
-    appointment_date = fields.Date(string='Appointment date',
+    appointment_date = fields.Date(string='Appointment date', required=True,
                                    help="Appointment date for the service")
     compliant_ids = fields.One2many('workshop.complaints', 'workshop_id')
     responsible_id = fields.Many2one('res.users', 'Responsible User',
@@ -39,17 +41,27 @@ class WorkshopAppointment(models.Model):
                                  default=lambda self: self.env.company)
     notes = fields.Html(string="Notes")
     work_order_id = fields.Many2one('work.order')
+    maintenance_reminder = fields.Boolean(string="Maintenance reminder",
+                                          help="Sends an automatic reminder "
+                                               "for the maintenance for every "
+                                               "5000 km or 6 months")
+    service_km = fields.Float(string="service time odo meter")
 
     def appointment_confirm(self):
+        """Function defined for confirming appointment"""
         mail_template = self.env.ref(
             'workshop_management.confirmation_email_template')
         mail_template.send_mail(self.id, force_send=True)
+        self.service_km = self.total_km
         self.write({'state': 'confirmed'})
 
     def appointment_cancel(self):
+        """Function defined for cancelling appointment"""
         self.write({'state': 'cancelled'})
 
     def receive_vehicle(self):
+        """Function defined for receiving vehicle and add a pop-up to
+        collect additional details from the customer"""
         self.write({'state': 'received'})
         return {
             'name': 'Other complaints',
@@ -64,6 +76,8 @@ class WorkshopAppointment(models.Model):
         }
 
     def vehicle_pickup(self):
+        """Function defined for pick-up the vehicle from the customer
+         and place a work order for the vehicle"""
         self.work_order_id = self.env['work.order'].create({
             'customer_id': self.customer_id.id,
             'appointment_no': self.appointment_no,
@@ -84,7 +98,8 @@ class WorkshopAppointment(models.Model):
         return result
 
     def reminder_mail(self):
-        print("haii")
+        """Function defined for sending reminder request
+        one day before the appointment date"""
         today = fields.Date.today()
         tomorrow = today + timedelta(days=1)
         print(today)
@@ -97,6 +112,8 @@ class WorkshopAppointment(models.Model):
                 mail_template.send_mail(rec.id, force_send=True)
 
     def smart_button_work_order(self):
+        """Function defined for adding smart button to show the
+        work order for the appointment"""
         return {
             'type': 'ir.actions.act_window',
             'name': 'work_order',
@@ -105,3 +122,20 @@ class WorkshopAppointment(models.Model):
             'res_id': self.work_order_id.id,
             'context': {'create': False}
         }
+
+    def maintenance_mail(self):
+        """Function defined for sending maintenance request for each 5000km
+        or 6 months intervals"""
+        for rec in self.search([]):
+            if rec.maintenance_reminder:
+                maintenance_month = fields.Date.add(rec.appointment_date,
+                                                    months=6)
+                maintenance_km = rec.service_km + 5000
+                print(maintenance_km)
+                print(maintenance_month)
+                print(rec.total_km)
+                if rec.service_km or rec.appointment_date:
+                    if rec.total_km > maintenance_km:
+                        mail_template = self.env.ref(
+                            'workshop_management.maintenance_email_template')
+                        mail_template.send_mail(rec.id, force_send=True)

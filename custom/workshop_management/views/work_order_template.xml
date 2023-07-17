@@ -18,18 +18,120 @@
                 <thead>
                     <tr class="active">
                         <th class="text-right">Work orders</th>
+                        <th class="text-right">Vehicle</th>
+                        <th class="text-right">Start date</th>
+                        <th class="text-right">End date</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <t t-foreach="order" t-as="rec">
                         <tr>
+                            <td>
+                                <a t-attf-href="/my/work_order_web/#{order.id}">
+                                    <t t-out="rec.order_no"/>
+                                </a>
+                            </td>
                             <td class="text-right">
-                                <span t-field="rec.order_no"/>
+                                <span t-field="rec.vehicle_id"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="rec.start_date"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="rec.end_date"/>
                             </td>
                         </tr>
                     </t>
                 </tbody>
             </t>
         </t>
+    </template>
+    <template id="work_order_portal_form" inherit_id="portal.portal_sidebar">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <section style="background-color: #eee;">
+                <div class="container py-5">
+                    <div class="col-lg-8">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Order No.</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <t t-out="order.order_no"/>
+                                        </p><br/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Name</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <t t-out="order.customer_id.name"/>
+                                        </p><br/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Vehicle</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <t t-out="order.vehicle_id.name"/>
+                                        </p><br/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Start date</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <t t-out="order.start_date"/>
+                                        </p><br/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">End date</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <t t-out="order.end_date"/>
+                                        </p><br/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Additional Works</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <t t-foreach="order.extra_components_ids"
+                                               t-as="line">
+                                                <t t-out="line.extra_components"/>
+                                                <br/>
+                                            </t>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="mb-0">
+                                    <button type="button"
+                                            class="btn btn-primary">Approve
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-outline-primary ms-1">
+                                        Reject
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </xpath>
     </template>
 </odoo>
