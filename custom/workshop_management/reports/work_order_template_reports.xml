@@ -57,13 +57,15 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <t t-foreach="form_data['material_order_ids']" t-as="line">
+                            <t t-set="materials"
+                               t-value="request.env['material.order'].browse(material)"/>
+                            <t t-foreach="materials" t-as="line">
                                 <tr>
                                     <td>
                                         <span t-esc="line_index+1"/>
                                     </td>
                                     <td>
-                                        <span t-esc="line.materials_id"/>
+                                        <span t-esc="line.materials_id.name"/>
                                     </td>
                                     <td>
                                         <span t-esc="line.quantity"/>
@@ -73,31 +75,6 @@
                                     </td>
                                     <td>
                                         <span t-esc="line.total_price"/>
-                                    </td>
-                                </tr>
-                            </t>
-                        </table>
-                    </div>
-                    <div>
-                        <table class="table table-bordered mt32">
-                            <thead>
-                                <tr>
-                                    <th name="th_slno" class="text-left">
-                                        <span>Sl. No</span>
-                                    </th>
-                                    <th name="th_components"
-                                        class="text-left">
-                                        <span>Extra components used</span>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <t t-foreach="form_data['extra_components_ids']" t-as="line">
-                                <tr>
-                                    <td>
-                                        <span t-esc="line_index+1"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="line.extra_components"/>
                                     </td>
                                 </tr>
                             </t>

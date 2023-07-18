@@ -13,7 +13,7 @@
                     <button name="receive_vehicle" string="Receive"
                             type="object" class="oe_highlight"
                             states="confirmed"/>
-                    <button name="vehicle_pickup" string="Pick-up"
+                    <button name="vehicle_pickup" string="To-work"
                             type="object" class="oe_highlight"
                             states="received"/>
                     <button name="appointment_cancel" string="Cancel"
@@ -62,6 +62,9 @@
                                     <field name="responsible_id"/>
                                     <field name="company_id"/>
                                     <field name="maintenance_reminder"/>
+                                </group>
+                                <group>
+                                    <field name="other_vehicle_ids" widget="many2many_tags"/>
                                 </group>
                             </group>
                         </page>

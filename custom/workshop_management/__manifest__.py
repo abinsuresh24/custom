@@ -23,7 +23,7 @@
         'views/work_order_template.xml',
         'views/res_partner_view.xml',
         'reports/report.xml',
-        # 'reports/work_order_template_reports.xml',
+        'reports/work_order_template_reports.xml',
         'wizards/other_complaints_view.xml',
     ],
     'installable': True,

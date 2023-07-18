@@ -46,6 +46,10 @@ class WorkshopAppointment(models.Model):
                                                "for the maintenance for every "
                                                "5000 km or 6 months")
     service_km = fields.Float(string="service time odo meter")
+    other_vehicle_ids = fields.Many2many('fleet.vehicle',
+                                         string="Other vehicles",
+                                domain="[('driver_id', '=', customer_id)]",
+                                help="Other vehicles owned by customers")
 
     def appointment_confirm(self):
         """Function defined for confirming appointment"""

@@ -7,19 +7,20 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,running,done"/>
                     <button name="start_work" string="Start"
                             type="object" class="btn-success"
                             states="draft"/>
-                    <button name="stop_work" string="Stop"
-                            type="object" class="btn-danger"
-                            states="running,hold"/>
                     <button name="request_approval" string="Request approval"
                             type="object" class="oe_highlight"
-                            states="draft,running"/>
+                            states="running"/>
+                    <button name="stop_work" string="Stop"
+                            type="object" class="btn-danger"
+                            states="running,request_approved,request_rejected"/>
                     <button name="work_confirm" string="Confirm"
                             type="object" class="oe_highlight"
-                            states="running,hold"/>
+                            states="done"/>
                     <button name="create_invoice" string="Create invoice"
                             type="object" class="oe_highlight"
                             states="repaired"/>
@@ -29,13 +30,22 @@
                     <button name="work_cancel" string="Cancel"
                             type="object" class="oe_highlight"
                             states="draft"/>
+                    <button name="receive_vehicle" string="Receive vehicle"
+                            type="object" class="oe_highlight"
+                            states="repaired"/>
+                    <button name="order_parts" string="Order For Parts"
+                            type="object" class="oe_highlight"
+                            states="draft"/>
+                    <button name="continue_work" string="Continue work"
+                            type="object" class="oe_highlight"
+                            states="waiting"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="smart_button_appointment"
-                                string="Appointment"
+                        <button name="smart_button_invoice"
+                                string="Invoice"
                                 type="object" class="oe_stat_button"
-                                icon="fa-car" states="draft"/>
+                                icon="fa-edit" states="repaired"/>
                     </div>
                     <div class="oe_title">
                         <h1>
@@ -49,6 +59,7 @@
                             <field name="customer_id"/>
                             <field name="vehicle_id"/>
                             <field name="odo_meter"/>
+                            <field name="payment_option" invisible="1"/>
                         </group>
                         <group>
                             <field name="booking_date"/>
@@ -56,6 +67,8 @@
                             <field name="phone"/>
                             <field name="start_date"/>
                             <field name="end_date"/>
+                            <field name="payment_method_type"
+                                   attrs="{'invisible': [('payment_option', '=', False)]}"/>
                         </group>
                     </group>
                     <notebook>

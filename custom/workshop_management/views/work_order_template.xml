@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!--    Inherited template for adding Track order in portal-->
+    <!--    Inherited template for adding work order menu in portal-->
     <template id="portal_my_home_work_order" name="Workorder"
               customize_show="True" inherit_id="portal.portal_my_home">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
@@ -11,7 +11,7 @@
             </t>
         </xpath>
     </template>
-    <!--    Template created for showing track orders in the portal as list view-->
+    <!--    Template created for showing work orders in the portal as list view-->
     <template id="work_order_portal_list">
         <t t-call="portal.portal_layout">
             <t t-call="portal.portal_table">
@@ -47,6 +47,7 @@
             </t>
         </t>
     </template>
+    <!--    Template created for showing work order in the portal as form view-->
     <template id="work_order_portal_form" inherit_id="portal.portal_sidebar">
         <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
             <section style="background-color: #eee;">
@@ -61,7 +62,8 @@
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
                                             <t t-out="order.order_no"/>
-                                        </p><br/>
+                                        </p>
+                                        <br/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -71,7 +73,8 @@
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
                                             <t t-out="order.customer_id.name"/>
-                                        </p><br/>
+                                        </p>
+                                        <br/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -81,7 +84,8 @@
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
                                             <t t-out="order.vehicle_id.name"/>
-                                        </p><br/>
+                                        </p>
+                                        <br/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -91,7 +95,8 @@
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
                                             <t t-out="order.start_date"/>
-                                        </p><br/>
+                                        </p>
+                                        <br/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -101,7 +106,8 @@
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
                                             <t t-out="order.end_date"/>
-                                        </p><br/>
+                                        </p>
+                                        <br/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -119,13 +125,15 @@
                                     </div>
                                 </div>
                                 <div class="mb-0">
-                                    <button type="button"
-                                            class="btn btn-primary">Approve
-                                    </button>
-                                    <button type="button"
+                                    <a t-attf-href="/my/work_order_web/#{order.id}/approve">
+                                        <button type="button"
+                                                class="btn btn-primary">Approve
+                                        </button>
+                                    </a>
+                                    <a t-attf-href="/my/work_order_web/#{order.id}/reject"><button type="button"
                                             class="btn btn-outline-primary ms-1">
                                         Reject
-                                    </button>
+                                    </button></a>
                                 </div>
                             </div>
                         </div>
@@ -133,5 +141,15 @@
                 </div>
             </section>
         </xpath>
+    </template>
+    <template id="work_order_portal_approve">
+        <t t-call="portal.portal_layout">
+            <p><h1>Approve Success</h1></p>
+        </t>
+    </template>
+    <template id="work_order_portal_reject">
+        <t t-call="portal.portal_layout">
+            <p><h1>Approve Rejected</h1></p>
+        </t>
     </template>
 </odoo>

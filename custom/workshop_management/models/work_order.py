@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 from odoo.exceptions import MissingError
-from odoo.tools.safe_eval import datetime
 from odoo import api, fields, models, _
 
 
@@ -24,12 +22,17 @@ class WorkOrder(models.Model):
     phone = fields.Char(related='customer_id.phone', string="Phone")
     state = fields.Selection(
         [('draft', 'Draft'), ('running', 'Running'), ('hold', 'Hold'),
-         ('repaired', 'Repaired')], string='State', default='draft')
+         ('done', 'Done'), ('request_approved', 'Request approved'),
+         ('repaired', 'Repaired'), ('received', 'Received'),
+         ('request_rejected', 'Request rejected'),
+         ('cancelled', 'Cancelled'), ('waiting', 'Waiting for parts')],
+        string='State', default='draft')
     start_date = fields.Datetime(string="Start date")
     end_date = fields.Datetime(string="End date")
     notes = fields.Html(string="Notes")
     extra_components_ids = fields.One2many('extra.components', 'extra_comp_id',
                                            string="Extra Components")
+    payment_option = fields.Boolean(string="Payment option")
     mechanic_id = fields.Many2one('hr.employee', string="Mechanic")
     hourly_cost = fields.Monetary(related="mechanic_id.hourly_cost",
                                   currency_field='company_currency_id')
@@ -43,6 +46,9 @@ class WorkOrder(models.Model):
     material_order_ids = fields.One2many('material.order', 'material_order_id',
                                          string="Material orders")
     invoice_id = fields.Many2one('account.move', string="Invoice")
+    payment_method_type = fields.Selection(
+        [('pay_immediately', 'Pay immediately'),
+         ('pay_on_acc', 'Pay on account')], default='pay_immediately')
 
     @api.model
     def create(self, vals_list):
@@ -64,13 +70,21 @@ class WorkOrder(models.Model):
     def stop_work(self):
         """Function defined for calculating the end time of the work"""
         self.end_date = fields.Datetime.now()
-        print(self.end_date)
+        start_datetime = fields.Datetime.from_string(self.start_date)
+        print('start', start_datetime)
+        end_datetime = fields.Datetime.from_string(self.end_date)
+        print('end', end_datetime)
+        time_difference = end_datetime - start_datetime
+        hours = time_difference.total_seconds() / 3600
+        print(hours, "hoursss")
+        self.service_cost = self.hourly_cost * hours
+        print(self.service_cost)
+        self.write({'state': 'done'})
 
     def request_approval(self):
         """Function defined for requesting approval from
         the customers to add extra components"""
         self.write({'state': 'hold'})
-        print("req")
 
     def work_confirm(self):
         """Function defined for confirming the work order"""
@@ -81,7 +95,13 @@ class WorkOrder(models.Model):
 
     def work_cancel(self):
         """Function defined for cancel the work order"""
-        print("5")
+        self.write({'state': 'cancelled'})
+
+    def order_parts(self):
+        self.write({'state': 'waiting'})
+
+    def continue_work(self):
+        self.write({'state': 'draft'})
 
     def create_invoice(self):
         """Function defined for creating invoice for the materials used
@@ -98,6 +118,23 @@ class WorkOrder(models.Model):
                 'move_id': self.invoice_id.id,
                 'quantity': rec.quantity,
                 'price_unit': rec.price})
+        mechanic_cost = self.env['product.product'].search(
+            [('name', '=', 'Mechanic cost')])
+        if mechanic_cost:
+            mechanic_cost.write({'lst_price': self.service_cost})
+            self.env['account.move.line'].create({
+                'product_id': mechanic_cost.id,
+                'move_id': self.invoice_id.id,
+                'quantity': 1,
+                'price_unit': mechanic_cost.lst_price})
+        else:
+            mech_cost = self.env['product.product'].create(
+                {'name': 'Mechanic cost', 'lst_price': self.service_cost})
+            self.env['account.move.line'].create({
+                'product_id': mech_cost.id,
+                'move_id': self.invoice_id.id,
+                'quantity': 1,
+                'price_unit': mech_cost.lst_price})
         return {
             'type': 'ir.actions.act_window',
             'name': 'Invoice',
@@ -108,34 +145,35 @@ class WorkOrder(models.Model):
             'target': 'current'
         }
 
-    @api.depends('start_date', 'end_date')
-    def calculate_cost(self):
-        """Function defined for calculating the work cost for the work order"""
-        if self.start_date and self.end_date:
-            start_date = datetime.strptime(str(self.start_date),
-                                           '%Y-%m-%d %H:%M:%S')
-            end_date = datetime.strptime(str(self.end_date),
-                                         '%Y-%m-%d %H:%M:%S')
-            self.service_cost = (end_date - start_date).total_seconds() / 3600
-            print(self.service_cost)
+    def receive_vehicle(self):
+        pay_account = self.customer_id.pay_on_account
+        if pay_account or self.invoice_id.payment_state == 'paid':
+            self.write({'state': 'received'})
+        else:
+            raise MissingError(
+                "Please make the payment before receiving the vehicle")
 
-    def smart_button_appointment(self):
+    def smart_button_invoice(self):
         """Function defined for appointment smart button in the work order"""
-        appointment = self.env['workshop.appointment'].search(
-            [('appointment_no', '=', self.appointment_no)])
         return {
             'type': 'ir.actions.act_window',
-            'name': 'appointment',
+            'name': 'invoice',
             'view_mode': 'form',
-            'res_model': 'workshop.appointment',
-            'domain': [('id', '=', appointment.id)],
+            'res_model': 'account.move',
+            'res_id': self.invoice_id.id,
             'context': {'create': False}
         }
 
     def create_report(self):
         """Function defined for creating report for the work order"""
-        data = {'form_data': self.read()[0]}
+        data = {'form_data': self.read()[0],
+                'material': self.material_order_ids.ids}
         print(data)
         return self.env.ref(
             'workshop_management.action_report_work_order').report_action(
             self, data=data)
+
+    @api.depends('customer_id')
+    def payment_type(self):
+        if self.customer_id.pay_on_account:
+            self.payment_option = True

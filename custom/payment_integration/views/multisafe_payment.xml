@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="payment.payment_provider_form"/>
         <field name="arch" type="xml">
             <group name="provider_credentials" position="inside">
-                <group>
-                    <field name="multisafepay_secret_key" string="Secret Key"
+                <group attrs="{'invisible': [('code', '!=', 'multisafepay')]}">
+                    <field name="multisafepay_website_key" string="API Key"
                            attrs="{'required':[ ('code', '=', 'multisafepay'), ('state', '!=', 'disabled')]}"
                            password="True"/>
                 </group>

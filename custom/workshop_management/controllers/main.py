@@ -30,9 +30,25 @@ class WorkOrders(CustomerPortal):
                               {'order': order})
 
     @http.route('/my/work_order_web/<model("work.order"):order_id>',
-                type='http', auth='public',website=True)
+                type='http', auth='public', website=True)
     def orders(self, order_id):
         """Function defined for setting approve button in the customer portal"""
         vals = {'order': order_id}
         return request.render("workshop_management.work_order_portal_form",
                               vals)
+
+    @http.route('/my/work_order_web/<model("work.order"):order_id>/approve',
+                type='http', auth='public',
+                website=True)
+    def approve_appointment(self, order_id):
+        order_id.write({'state': 'request_approved'})
+        return request.render("workshop_management.work_order_portal_approve",
+                              {'type': 'ir.actions.client', 'tag': 'reload'})
+
+    @http.route('/my/work_order_web/<model("work.order"):order_id>/reject',
+                type='http', auth='public',
+                website=True)
+    def reject_appointment(self, order_id):
+        order_id.write({'state': 'request_rejected'})
+        return request.render("workshop_management.work_order_portal_reject",
+                              {'type': 'ir.actions.client', 'tag': 'reload'})

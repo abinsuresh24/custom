@@ -17,7 +17,7 @@
                         <button name="confirm_complaints" string="CONFIRM"
                                 type="object" class="oe_highlight"/>
                         <button name="canceled_order" string="Cancel order"
-                                type="object" class="oe_highlight"/>
+                                special="cancel" class="oe_highlight"/>
                     </footer>
                 </sheet>
             </form>
