@@ -9,8 +9,9 @@
      Details about workshop management and service details
     """,
     'depends': ['base', 'mail', 'account', 'contacts', 'fleet',
-                'sale_management', 'hr', 'hr_timesheet'],
+                'sale_management', 'hr', 'hr_timesheet', 'purchase'],
     'data': [
+        'security/workshop_management_security.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
         'data/confirmation_mail.xml',
@@ -25,6 +26,7 @@
         'reports/report.xml',
         'reports/work_order_template_reports.xml',
         'wizards/other_complaints_view.xml',
+        'wizards/purchase_order_view.xml',
     ],
     'installable': True,
     'auto_install': False,

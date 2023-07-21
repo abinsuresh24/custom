@@ -88,7 +88,7 @@
                 <field name="customer_id"/>
                 <field name="vehicle_id"/>
                 <field name="total_km"/>
-                <field name="booking_date"/>
+                <field name="appointment_date"/>
                 <field name="phone" optional="hide"/>
                 <field name="email" optional="hide"/>
                 <field name="state" optional="hide"/>
@@ -102,7 +102,7 @@
         <field name="view_mode">tree,form</field>
     </record>
     <menuitem id="menu_root"
-              name="Appointment"
+              name="Workshop"
               sequence="2">
     </menuitem>
     <menuitem id="menu_appointment"

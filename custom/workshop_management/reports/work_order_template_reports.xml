@@ -17,6 +17,12 @@
                                 </t>
                             </t>
                         </h5>
+                        <h5>Vehicle:
+                            <t t-if="form_data.get('vehicle_id')">
+                                <t t-esc="form_data['vehicle_id'][1]">
+                                </t>
+                            </t>
+                        </h5>
                         <h5>Start date:
                             <t t-if="form_data.get('start_date')">
                                 <t t-esc="form_data['start_date']">

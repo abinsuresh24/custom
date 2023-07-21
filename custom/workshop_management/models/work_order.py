@@ -71,14 +71,10 @@ class WorkOrder(models.Model):
         """Function defined for calculating the end time of the work"""
         self.end_date = fields.Datetime.now()
         start_datetime = fields.Datetime.from_string(self.start_date)
-        print('start', start_datetime)
         end_datetime = fields.Datetime.from_string(self.end_date)
-        print('end', end_datetime)
         time_difference = end_datetime - start_datetime
         hours = time_difference.total_seconds() / 3600
-        print(hours, "hoursss")
         self.service_cost = self.hourly_cost * hours
-        print(self.service_cost)
         self.write({'state': 'done'})
 
     def request_approval(self):
@@ -98,10 +94,31 @@ class WorkOrder(models.Model):
         self.write({'state': 'cancelled'})
 
     def order_parts(self):
-        self.write({'state': 'waiting'})
+        """Function defined for change the work order to the waiting state"""
+        return {'name': 'purchase order',
+                'type': 'ir.actions.act_window',
+                'res_model': 'work.purchase',
+                'view_mode': 'form',
+                "target": 'new',
+                'context': {
+                    'default_order_details': self.id
+                }
+                }
+
+    def smart_button_purchase(self):
+        """Function defined for appointment smart button in the work order"""
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'purchase',
+            'view_mode': 'tree',
+            'res_model': 'purchase.order',
+            'domain': [('origin', '=', self.id)],
+            'context': {'create': False}
+        }
 
     def continue_work(self):
-        self.write({'state': 'draft'})
+        """Function defined for change the work order to draft state"""
+        self.write({'state': 'running'})
 
     def create_invoice(self):
         """Function defined for creating invoice for the materials used
@@ -146,6 +163,7 @@ class WorkOrder(models.Model):
         }
 
     def receive_vehicle(self):
+        """Function defined for deliver vehicle to customer"""
         pay_account = self.customer_id.pay_on_account
         if pay_account or self.invoice_id.payment_state == 'paid':
             self.write({'state': 'received'})
@@ -168,12 +186,12 @@ class WorkOrder(models.Model):
         """Function defined for creating report for the work order"""
         data = {'form_data': self.read()[0],
                 'material': self.material_order_ids.ids}
-        print(data)
         return self.env.ref(
             'workshop_management.action_report_work_order').report_action(
             self, data=data)
 
-    @api.depends('customer_id')
-    def payment_type(self):
+    @api.onchange('customer_id')
+    def _onchange_payment_method_type(self):
+        """Function defined for enabling selection field based on customer"""
         if self.customer_id.pay_on_account:
             self.payment_option = True

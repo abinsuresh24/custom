@@ -23,17 +23,16 @@ class WorkOrders(CustomerPortal):
         and pass it to the front end"""
         user = request.env.user
         partner = user.partner_id.id
-        print(partner)
         order = request.env['work.order'].sudo().search(
             [('customer_id', '=', partner)])
         return request.render("workshop_management.work_order_portal_list",
-                              {'order': order})
+                              {'orders': order})
 
     @http.route('/my/work_order_web/<model("work.order"):order_id>',
                 type='http', auth='public', website=True)
     def orders(self, order_id):
         """Function defined for setting approve button in the customer portal"""
-        vals = {'order': order_id}
+        vals = {'orders': order_id}
         return request.render("workshop_management.work_order_portal_form",
                               vals)
 

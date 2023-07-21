@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--    Other complaints wizard view form-->
-    <record id="other_complaints_wizard_view_form" model="ir.ui.view">
-        <field name="name">other.complaints.wizard.view.form</field>
-        <field name="model">other.complaints</field>
+    <!--    work purchase wizard view form-->
+    <record id="purchase_order_wizard_view_form" model="ir.ui.view">
+        <field name="name">purchase.order.wizard.view.form</field>
+        <field name="model">work.purchase</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
                     <group>
                         <group>
-                            <field name="other_complaints"/>
-                            <field name="appointment"/>
+                            <field name="vendor_id"/>
+                            <field name="product_id"/>
+                            <field name="quantity"/>
                         </group>
                     </group>
                     <footer>
-                        <button name="confirm_complaints" string="CONFIRM"
+                        <button name="confirm_order" string="CONFIRM"
                                 type="object" class="oe_highlight"/>
                         <button string="Cancel order"
                                 special="cancel" class="oe_highlight"/>

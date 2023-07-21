@@ -11,7 +11,7 @@
             </t>
         </xpath>
     </template>
-    <!--    Template created for showing work orders in the portal as list view-->
+    <!--  Template created for showing work orders in the portal as list view-->
     <template id="work_order_portal_list">
         <t t-call="portal.portal_layout">
             <t t-call="portal.portal_table">
@@ -25,10 +25,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <t t-foreach="order" t-as="rec">
+                    <t t-foreach="orders" t-as="rec">
                         <tr>
                             <td>
-                                <a t-attf-href="/my/work_order_web/#{order.id}">
+                                <a t-attf-href="/my/work_order_web/#{rec.id}">
                                     <t t-out="rec.order_no"/>
                                 </a>
                             </td>
@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
-                                            <t t-out="order.order_no"/>
+                                            <t t-out="orders.order_no"/>
                                         </p>
                                         <br/>
                                     </div>
@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
-                                            <t t-out="order.customer_id.name"/>
+                                            <t t-out="orders.customer_id.name"/>
                                         </p>
                                         <br/>
                                     </div>
@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
-                                            <t t-out="order.vehicle_id.name"/>
+                                            <t t-out="orders.vehicle_id.name"/>
                                         </p>
                                         <br/>
                                     </div>
@@ -94,7 +94,7 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
-                                            <t t-out="order.start_date"/>
+                                            <t t-out="orders.start_date"/>
                                         </p>
                                         <br/>
                                     </div>
@@ -105,7 +105,7 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
-                                            <t t-out="order.end_date"/>
+                                            <t t-out="orders.end_date"/>
                                         </p>
                                         <br/>
                                     </div>
@@ -116,7 +116,7 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">
-                                            <t t-foreach="order.extra_components_ids"
+                                            <t t-foreach="orders.extra_components_ids"
                                                t-as="line">
                                                 <t t-out="line.extra_components"/>
                                                 <br/>
@@ -125,15 +125,20 @@
                                     </div>
                                 </div>
                                 <div class="mb-0">
-                                    <a t-attf-href="/my/work_order_web/#{order.id}/approve">
-                                        <button type="button"
-                                                class="btn btn-primary">Approve
-                                        </button>
-                                    </a>
-                                    <a t-attf-href="/my/work_order_web/#{order.id}/reject"><button type="button"
-                                            class="btn btn-outline-primary ms-1">
-                                        Reject
-                                    </button></a>
+                                    <t t-if="orders.extra_components_ids">
+                                        <a t-attf-href="/my/work_order_web/#{orders.id}/approve">
+                                            <button type="button"
+                                                    class="btn btn-primary">
+                                                Approve
+                                            </button>
+                                        </a>
+                                        <a t-attf-href="/my/work_order_web/#{orders.id}/reject">
+                                            <button type="button"
+                                                    class="btn btn-outline-primary ms-1">
+                                                Reject
+                                            </button>
+                                        </a>
+                                    </t>
                                 </div>
                             </div>
                         </div>
@@ -142,14 +147,20 @@
             </section>
         </xpath>
     </template>
+    <!--    Template created for showing approve success message-->
     <template id="work_order_portal_approve">
         <t t-call="portal.portal_layout">
-            <p><h1>Approve Success</h1></p>
+            <p>
+                <h1>Approve Success</h1>
+            </p>
         </t>
     </template>
+    <!--    Template created for showing rejection success message-->
     <template id="work_order_portal_reject">
         <t t-call="portal.portal_layout">
-            <p><h1>Approve Rejected</h1></p>
+            <p>
+                <h1>Approve Rejected</h1>
+            </p>
         </t>
     </template>
 </odoo>

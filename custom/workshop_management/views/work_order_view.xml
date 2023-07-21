@@ -13,8 +13,7 @@
                             type="object" class="btn-success"
                             states="draft"/>
                     <button name="request_approval" string="Request approval"
-                            type="object" class="oe_highlight"
-                            states="running"/>
+                            type="object" class="oe_highlight" states="running"/>
                     <button name="stop_work" string="Stop"
                             type="object" class="btn-danger"
                             states="running,request_approved,request_rejected"/>
@@ -35,7 +34,7 @@
                             states="repaired"/>
                     <button name="order_parts" string="Order For Parts"
                             type="object" class="oe_highlight"
-                            states="draft"/>
+                            states="running"/>
                     <button name="continue_work" string="Continue work"
                             type="object" class="oe_highlight"
                             states="waiting"/>
@@ -46,6 +45,10 @@
                                 string="Invoice"
                                 type="object" class="oe_stat_button"
                                 icon="fa-edit" states="repaired"/>
+                        <button name="smart_button_purchase"
+                                string="Purchase order"
+                                type="object" class="oe_stat_button"
+                                icon="fa-credit-card" states="waiting"/>
                     </div>
                     <div class="oe_title">
                         <h1>
@@ -105,12 +108,14 @@
     <!--    Workshop order tree view-->
     <record id="work_order_view_tree" model="ir.ui.view">
         <field name="name">work.order.view.tree</field>
-        <field name="model">workshop.appointment</field>
+        <field name="model">work.order</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="appointment_no"/>
+                <field name="order_no"/>
                 <field name="customer_id"/>
                 <field name="vehicle_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
             </tree>
         </field>
     </record>

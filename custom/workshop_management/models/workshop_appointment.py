@@ -48,8 +48,8 @@ class WorkshopAppointment(models.Model):
     service_km = fields.Float(string="service time odo meter")
     other_vehicle_ids = fields.Many2many('fleet.vehicle',
                                          string="Other vehicles",
-                                domain="[('driver_id', '=', customer_id)]",
-                                help="Other vehicles owned by customers")
+                                    domain="[('driver_id', '=', customer_id)]",
+                                    help="Other vehicles owned by customers")
 
     def appointment_confirm(self):
         """Function defined for confirming appointment"""
@@ -106,11 +106,8 @@ class WorkshopAppointment(models.Model):
         one day before the appointment date"""
         today = fields.Date.today()
         tomorrow = today + timedelta(days=1)
-        print(today)
-        print(tomorrow)
         for rec in self.search([]):
             if rec.appointment_date == tomorrow:
-                print("yes")
                 mail_template = self.env.ref(
                     'workshop_management.reminder_email_template')
                 mail_template.send_mail(rec.id, force_send=True)
@@ -135,11 +132,9 @@ class WorkshopAppointment(models.Model):
                 maintenance_month = fields.Date.add(rec.appointment_date,
                                                     months=6)
                 maintenance_km = rec.service_km + 5000
-                print(maintenance_km)
-                print(maintenance_month)
-                print(rec.total_km)
                 if rec.service_km or rec.appointment_date:
-                    if rec.total_km > maintenance_km:
+                    if rec.total_km > maintenance_km or \
+                            fields.date.today() == maintenance_month:
                         mail_template = self.env.ref(
                             'workshop_management.maintenance_email_template')
                         mail_template.send_mail(rec.id, force_send=True)
