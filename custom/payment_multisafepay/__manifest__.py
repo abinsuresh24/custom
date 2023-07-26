@@ -8,14 +8,16 @@
     'description': """
     payment provider multisafepay integration
     """,
-    'depends': ['base', 'payment'],
+    'depends': ['base', 'payment', 'website'],
     'data': [
         'views/multisafe_payment.xml',
-        'views/multisafepay_template.xml',
-        'data/multisafepay_data.xml',
+        'views/payment_multisafepay_template.xml',
+        'data/payment_provider_data.xml',
     ],
     'installable': True,
     'auto_install': False,
     'application': True,
+    'post_init_hook': 'post_init_hook',
+    'uninstall_hook': 'uninstall_hook',
     'license': 'AGPL-3',
 }
