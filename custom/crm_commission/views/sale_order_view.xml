@@ -10,13 +10,13 @@
                    position="before">
                 <field name="commission_amount"/>
             </xpath>
-            <xpath expr="//button[@name='action_view_delivery']"
-                   position="before">
-                <button class="oe_stat_button" type="object"
-                        name="order_commission"
-                        icon="fa-users" string="Commission"
-                        attrs="{'invisible':[('state', '!=', 'sale')]}"/>
-            </xpath>
+<!--            <xpath expr="//button[@name='action_view_delivery']"-->
+<!--                   position="before">-->
+<!--                <button class="oe_stat_button" type="object"-->
+<!--                        name="order_commission"-->
+<!--                        icon="fa-users" string="Commission"-->
+<!--                        attrs="{'invisible':[('state', '!=', 'sale')]}"/>-->
+<!--            </xpath>-->
             <xpath expr="//field[@name='team_id']"
                    position="before">
                 <field name="commission_plan_id"/>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<!--    Survey form view Inherited-->
     <record id="survey_survey_view_form" model="ir.ui.view">
         <field name="name">survey.survey.view.form.inherit.website.slides
         </field>
@@ -13,7 +14,7 @@
                             <field name="question_id"
                                    options="{'no_create': True,'no_create_edit':True}"/>
                             <field name="contact_details_id"/>
-                            <field name="survey_id" invisible="1"/>
+                            <field name="survey_relation_id" invisible="1"/>
                         </tree>
                     </field>
                 </page>

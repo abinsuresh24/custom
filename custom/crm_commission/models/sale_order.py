@@ -70,16 +70,16 @@ class SaleOrder(models.Model):
             'commission_plan_id': self.commission_plan_id.id})
         return res
 
-    def order_commission(self):
-        """Function defined for smart button to show commission details"""
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'sales commissions',
-            'view_mode': 'tree,form',
-            'res_model': 'sale.order',
-            'domain': [('id', '=', self.id)],
-            'context': {'create': False}
-        }
+    # def order_commission(self):
+    #     """Function defined for smart button to show commission details"""
+    #     return {
+    #         'type': 'ir.actions.act_window',
+    #         'name': 'sales commissions',
+    #         'view_mode': 'tree,form',
+    #         'res_model': 'sale.order',
+    #         'domain': [('id', '=', self.id)],
+    #         'context': {'create': False}
+    #     }
 class SaleOrderLine(models.Model):
     """class defined for adding milestone in the sale order"""
     _inherit = 'sale.order.line'
