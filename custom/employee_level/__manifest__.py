@@ -10,7 +10,7 @@
     """,
     'depends': ['base', 'hr'],
     'data': ['security/ir.model.access.csv',
-             'views/employee_level_view.xml',
+             # 'views/employee_level_view.xml',
              'views/emp_level_view.xml',
              'views/hr_employee_view.xml',
              ],

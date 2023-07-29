@@ -15,3 +15,6 @@ class SaleOrder(models.Model):
                                           related='company_id.currency_id',
                                           string="Company Currency",
                                           readonly=True)
+
+    def _compute_amounts(self):
+        self.amount_total = 0
