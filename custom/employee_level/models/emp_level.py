@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class EmpLevel(models.Model):
@@ -9,3 +9,4 @@ class EmpLevel(models.Model):
 
     employee_level = fields.Char(string="Employee level")
     employee_salary = fields.Float(string="Salary")
+

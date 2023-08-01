@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models
+from odoo import fields, models
 
 
-class ResUsers(models.Model):
+class ResPartner(models.Model):
     _inherit = 'res.partner'
     _description = "Inherited res partner"
 
@@ -13,9 +13,10 @@ class ResUsers(models.Model):
                                 readonly=True)
 
     def _compute_count(self):
-        self.product_count = self.env['product.product'].search_count(
-            [('id', 'in',
-              self.customer_order_ids.order_line.product_id.ids)])
+        for rec in self:
+            rec.product_count = rec.env['product.product'].search_count(
+                [(
+                 'id', 'in', rec.customer_order_ids.order_line.product_id.ids)])
 
     def action_order_products(self):
         return {

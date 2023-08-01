@@ -9,9 +9,9 @@
             <xpath expr="//field[@name='job_id']" position="before">
                 <field name="emp_salary"/>
                 <field name="employee_level_id"/>
-                <field name="maximum_salary" invisible="1"/>
             </xpath>
             <xpath expr="//header" position="inside">
+                <field name="maximum_salary" invisible="1"/>
                 <button name="action_promote" string="Promote" type="object" attrs="{'invisible': [('maximum_salary', '=', True)]}"/>
             </xpath>
         </field>

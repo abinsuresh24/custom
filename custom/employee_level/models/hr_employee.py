@@ -19,10 +19,10 @@ class HrEmployee(models.Model):
             sal_level = order.mapped('employee_salary')
             if self.employee_level_id.employee_salary == sal_level[0]:
                 next_level = self.env['emp.level'].search(
-                    [('employee_level', '=', 'level 2')])
+                    [('employee_salary', '=', sal_level[1])])
                 self.write({"employee_level_id": next_level})
             else:
                 next_level = self.env['emp.level'].search(
-                    [('employee_level', '=', 'level 3')])
+                    [('employee_salary', '=', sal_level[2])])
                 self.write({"employee_level_id": next_level})
                 self.maximum_salary = True

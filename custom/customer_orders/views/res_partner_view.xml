@@ -24,4 +24,14 @@
             </xpath>
         </field>
     </record>
+    <record id="res_partner_view_tree" model="ir.ui.view">
+        <field name="name">res.partner.view.tree.inherit.customer.orders</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="product_count"/>
+                </field>
+        </field>
+    </record>
 </odoo>

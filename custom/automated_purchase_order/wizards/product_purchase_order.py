@@ -26,7 +26,8 @@ class OrderWizard(models.TransientModel):
                 res['product_id'] = product.product_variant_id
                 res['vendor_id'] = product.seller_ids.partner_id
                 res['price'] = product.seller_ids.filtered(
-                    lambda r: r.partner_id == product.seller_ids.partner_id[0]).price
+                    lambda r: r.partner_id == product.seller_ids.partner_id[
+                        0]).price
                 res['model_name'] = active_model
             return res
         else:
@@ -37,7 +38,8 @@ class OrderWizard(models.TransientModel):
                 res['product_id'] = product.id
                 res['vendor_id'] = product.product_tmpl_id.seller_ids.partner_id
                 res['price'] = product.seller_ids.filtered(
-                    lambda r: r.partner_id == product.seller_ids.partner_id[0]).price
+                    lambda r: r.partner_id == product.seller_ids.partner_id[
+                        0]).price
             return res
 
     def confirmed_order(self):
@@ -47,12 +49,12 @@ class OrderWizard(models.TransientModel):
         else:
             vendor = self.vendor_id
         value = {
-                    'order_line': [
-                        fields.Command.create(
-                            {'product_id': self.product_id.id,
-                             'product_qty': self.quantity,
-                             'price_unit': self.price})]
-                }
+            'order_line': [
+                fields.Command.create(
+                    {'product_id': self.product_id.id,
+                     'product_qty': self.quantity,
+                     'price_unit': self.price})]
+        }
         purchase_order = self.env['purchase.order'].search(
             [('partner_id', '=', vendor.id), ('state', '=', 'draft')])
         if purchase_order:

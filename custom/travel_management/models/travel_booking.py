@@ -70,7 +70,6 @@ class TravelBooking(models.Model):
         """Declaring the function for calculating the expiration date"""
         for rec in self:
             exp_period = rec.field_service_id.expiration_period
-            print(exp_period, "11111")
             booking_date = datetime.datetime.strptime(str(rec.booking_date),
                                                       "%Y-%m-%d")
             if rec.field_service_id.period_states == 'days':
@@ -96,8 +95,7 @@ class TravelBooking(models.Model):
         """Function declared for auto scheduling expiry date"""
         self.env['travel.booking'].search(
             [('expiration_date', '=', fields.date.today()),
-             ('state', '=', 'draft')]).write(
-            {'state': 'expired'})
+             ('state', '=', 'draft')]).write({'state': 'expired'})
 
     def travel_create_invoice(self):
         """Function defined for creating invoice for booking"""
