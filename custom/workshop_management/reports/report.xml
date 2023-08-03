@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<!--    PDF report action for travel management-->
+<!--    PDF report action for workshop management-->
     <record id="action_report_work_order" model="ir.actions.report">
         <field name="name">Work order</field>
         <field name="model">work.order</field>

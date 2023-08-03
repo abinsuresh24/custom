@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--    Monthly sales view form-->
+    <record id="monthly_sales_view_form" model="ir.ui.view">
+        <field name="name">monthly.sales.view.form</field>
+        <field name="model">monthly.sales</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_ids" widget="many2many_tags"/>
+                            <field name="sales_team_id"/>
+                            <field name="report_type"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+<!--    Monthly sales view tree-->
+    <record id="monthly_sales_view_tree" model="ir.ui.view">
+        <field name="name">monthly.sales.view.tree</field>
+        <field name="model">monthly.sales</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="partner_ids" widget="many2many_tags"/>
+                <field name="report_type"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+            </tree>
+        </field>
+    </record>
+<!--    Monthly sales menu action-->
+    <record id="monthly_sales_action" model="ir.actions.act_window">
+        <field name="name">Sales report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">monthly.sales</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

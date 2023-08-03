@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    Template for te PDF report-->
+    <template id="report_sale_order">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="text-center">
+                        <h2>Sale Order Report</h2>
+                    </div>
+                    <br></br>
+                    <div>
+                        <h5>Sales Team:
+                            <t t-if="form_data.get('sales_team_id')">
+                                <t t-esc="form_data['sales_team_id'][1]">
+                                </t>
+                            </t>
+                        </h5>
+                        <h5>Report type:
+                            <t t-if="form_data.get('report_type')">
+                                <t t-esc="form_data['report_type']">
+                                </t>
+                            </t>
+                        </h5>
+<!--                        <h5>Date from:-->
+<!--                            <t t-if="form_data.get('date_from')">-->
+<!--                                <t t-esc="form_data['date_from']">-->
+<!--                                </t>-->
+<!--                            </t>-->
+<!--                        </h5>-->
+<!--                        <h5>Date to:-->
+<!--                            <t t-if="form_data.get('date_to')">-->
+<!--                                <t t-esc="form_data['date_to']">-->
+<!--                                </t>-->
+<!--                            </t>-->
+<!--                        </h5>-->
+                    </div>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <!-- Table with the required data-->
+                    <table class="table table-bordered mt32">
+                        <thead>
+                            <tr>
+                                <th name="th_reference" class="text-left">
+                                    <span>Sl. No</span>
+                                </th>
+                                <th name="th_sale_order" class="text-left">
+                                    <span>Sale order</span>
+                                </th>
+                                <th name="th_order_date" class="text-left">
+                                    <span>Order date</span>
+                                </th>
+                                <th name="th_customer_name"
+                                    class="text-left">
+                                    <span>Customer name</span>
+                                </th>
+                                <th name="th_total" class="text-left">
+                                    <span>Total</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="sale_data" t-as="line">
+                            <tr>
+                                <td>
+                                    <span t-esc="line_index+1"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['order_no']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['create_date']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['name']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['amount_total']"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

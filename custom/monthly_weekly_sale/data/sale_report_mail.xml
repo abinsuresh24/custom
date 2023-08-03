@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+<!--        Sale order report mail template-->
+        <record id="sale_report_email_template" model="mail.template">
+            <field name="name">SALES REPORT</field>
+            <field name="model_id"
+                   ref="monthly_weekly_sale.model_monthly_sales"/>
+            <field name="email_from"/>
+            <field name="email_to"/>
+            <field name="subject">SALES REPORT</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <div style="margin: 0px; padding: 0px;">
+                        <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                            Dear <t t-out="object.partner_name"/>,
+                            <br/>
+                            <br/>
+                            Here is the Sales Report
+                            <br/>
+                            <br/>
+                            Thank you
+                            <br/>
+                        </p>
+                    </div>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

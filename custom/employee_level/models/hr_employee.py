@@ -8,7 +8,8 @@ class HrEmployee(models.Model):
     _description = "Inherited employee model"
 
     employee_level_id = fields.Many2one('emp.level')
-    emp_salary = fields.Float(related="employee_level_id.employee_salary",string="Salary")
+    emp_salary = fields.Float(related="employee_level_id.employee_salary",
+                              string="Salary")
     maximum_salary = fields.Boolean(string="Maximum salary")
 
     def action_promote(self):

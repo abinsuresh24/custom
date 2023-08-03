@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
@@ -16,5 +16,9 @@ class SaleOrder(models.Model):
                                           string="Company Currency",
                                           readonly=True)
 
-    def _compute_amounts(self):
-        self.amount_total = 0
+    @api.onchange('order_line')
+    def onchange_order_line(self):
+        for rec in self.order_line:
+            if self.partner_id.product_code:
+                self.order_line = [fields.Command.update(rec.id, {
+                    'name': self.partner_id.product_code + rec.product_id.default_code})]

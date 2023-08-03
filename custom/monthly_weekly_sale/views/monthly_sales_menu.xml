@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    Menu for sale report-->
+    <menuitem id="menu_monthly_weekly_report_menu" name="Monthly/Weekly Report"
+              parent="sale.menu_sale_report"
+              action="monthly_sales_action">
+    </menuitem>
+</odoo>
